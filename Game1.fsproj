@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Components/Components.fs" />
+    <Compile Include="ECSTypes.fs" />
+    <Compile Include="ECS.fs" />
+    <Compile Include="Systems/HealthSystem.fs" />
+    <Compile Include="Systems/CollisionSystem.fs" />
+    <Compile Include="Systems/EnemySpawnSystem.fs" />
+    <Compile Include="Systems/EnemyMovementSystem.fs" />
+    <Compile Include="Systems/MouseShootingSystem.fs" />
+    <Compile Include="Systems/MovementSystem.fs" />
+    <Compile Include="Systems/RenderSystem.fs" />
+    <Compile Include="Game1.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+  </ItemGroup>
+</Project>
