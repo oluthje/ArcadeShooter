@@ -15,7 +15,7 @@ let private createEnemyEntity (position: Vector2) (graphicsDevice: GraphicsDevic
     let size = Point(32, 32)
     createEntity (Map.ofList [
         (SpriteComponent, { Texture = texture; Position = Vector2(0.0f, 0.0f); Scale = Vector2(1.0f, 1.0f); FrameSize = Point(32, 32); Color = Color.OrangeRed; Offset = Vector2(0.0f, 0.0f) });
-        (ChasePlayerComponent, { Speed = 50; Chase = true });
+        (ChasePlayerComponent, { Speed = 50 });
         (PositionComponent, position);
         (HealthComponent, { Health = 3 });
         (DamageComponent, { Damage = 1 });

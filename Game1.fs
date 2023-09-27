@@ -37,9 +37,10 @@ type Game1 () as x =
         let texture = new Texture2D(x.GraphicsDevice, 1, 1)
         texture.SetData([| Color.Black |])
         let playerEntity =
+            let playerMovementComp : PlayerMovementComponent = { Speed = 200 }
             createEntity (Map.ofList [
                 (SpriteComponent, { Texture = texture; Position = Vector2(0.0f, 0.0f); Scale = Vector2(1.0f, 1.0f); FrameSize = Point(32, 32); Color = Color.White; Offset = Vector2(0.0f, 0.0f) });
-                (PlayerMovementComponent, { Speed = 200 });
+                (PlayerMovementComponent, playerMovementComp);
                 (PositionComponent, Vector2(96.0f, 6f * 32.0f));
                 (MouseShootingComponent, { Offset = Vector2(0.0f, 0.0f); CoolDownTime = 0.25; CoolDownTimer = TimeSpan.Zero })
             ])

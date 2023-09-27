@@ -24,7 +24,6 @@ type PlayerMovementComponent = {
 
 type ChasePlayerComponent = {
     Speed: float
-    Chase: bool
 }
 
 type SpriteComponent = {
