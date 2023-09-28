@@ -7,6 +7,8 @@
     <Compile Include="Components/Components.fs" />
     <Compile Include="ECSTypes.fs" />
     <Compile Include="ECS.fs" />
+    <Compile Include="Entities.fs" />
+    <Compile Include="Systems/EnemySystem.fs" />
     <Compile Include="Systems/HealthSystem.fs" />
     <Compile Include="Systems/CollisionSystem.fs" />
     <Compile Include="Systems/EnemySpawnSystem.fs" />

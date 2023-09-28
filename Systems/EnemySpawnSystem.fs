@@ -6,22 +6,9 @@ open System
 open ECS
 open ECSTypes
 open Components
+open Entities
 open Microsoft.Xna.Framework.Graphics
 open System.Diagnostics
-
-let private createEnemyEntity (position: Vector2) (graphicsDevice: GraphicsDevice) =
-    let texture = new Texture2D(graphicsDevice, 1, 1)
-    texture.SetData([| Color.Black |])
-    let size = Point(32, 32)
-    createEntity (Map.ofList [
-        (SpriteComponent, { Texture = texture; Position = Vector2(0.0f, 0.0f); Scale = Vector2(1.0f, 1.0f); FrameSize = Point(32, 32); Color = Color.OrangeRed; Offset = Vector2(0.0f, 0.0f) });
-        (ChasePlayerComponent, { Speed = 50 });
-        (PositionComponent, position);
-        (HealthComponent, { Health = 3 });
-        (DamageComponent, { Damage = 1 });
-        (CollisionComponent, { Size = size; Collided = false });
-        (FlashComponent, { FlashTimer = TimeSpan.Zero; FlashTime = 0.1; FlashTimes = 2; FlashTimesLeft = 0 })
-    ])
 
 let private getRandomEnemySpawnPosition (graphicsDevice:GraphicsDevice) =
     let screenWidth = float graphicsDevice.Viewport.Width
@@ -47,7 +34,13 @@ let update (gameTime: GameTime) (graphicsDevice: GraphicsDevice) (world: World) 
                     let enemySpawnerEntity = unbox<EnemySpawnComponent> spawner
                     let newSpawnTimer =
                         if enemySpawnerEntity.SpawnTimer >= TimeSpan.FromSeconds enemySpawnerEntity.SpawnTime then
-                            let enemyEntity = createEnemyEntity(getRandomEnemySpawnPosition graphicsDevice) graphicsDevice
+                            let random = Random()
+                            let enemyType = random.Next(3)
+                            let enemyEntity =
+                                match enemyType with
+                                    | 0 -> createSlowEnemyEntity (getRandomEnemySpawnPosition graphicsDevice) graphicsDevice
+                                    | _ -> createFastEnemyEntity (getRandomEnemySpawnPosition graphicsDevice) graphicsDevice
+
                             addedEntities <- enemyEntity :: addedEntities
                             TimeSpan.Zero
                         else

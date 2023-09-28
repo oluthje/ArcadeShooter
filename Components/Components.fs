@@ -69,4 +69,36 @@ type FlashComponent = {
     FlashTime: float
     FlashTimes: int
     FlashTimesLeft: int
+    FlashOn: bool
+    Running: bool
 }
+
+let createSpriteComponent (texture: Texture2D) (position: Vector2) (scale: Vector2) (frameSize: Point) (color: Color) (offset: Vector2) : SpriteComponent =
+    { Texture = texture; Position = position; Scale = scale; FrameSize = frameSize; Color = color; Offset = offset }
+
+let createPlayerMovementComponent (speed: float) : PlayerMovementComponent =
+    { Speed = speed }
+
+let createChasePlayerComponent (speed: float) : ChasePlayerComponent =
+    { Speed = speed }
+
+let createPositionComponent (position: Vector2) : Vector2 =
+    position
+
+let createMouseShootingComponent (offset: Vector2) (coolDownTime: float) (coolDownTimer: TimeSpan) : MouseShootingComponent =
+    { Offset = offset; CoolDownTime = coolDownTime; CoolDownTimer = coolDownTimer }
+
+let createHealthComponent (health: int) : HealthComponent =
+    { Health = health }
+
+let createEnemySpawnComponent (spawnTimer: TimeSpan) (spawnTime: float) : EnemySpawnComponent =
+    { SpawnTimer = spawnTimer; SpawnTime = spawnTime }
+
+let createDamageComponent (damage: int) : DamageComponent =
+    { Damage = damage }
+
+let createCollisionComponent (size: Point) : CollisionComponent =
+    { Size = size; Collided = false }
+
+let createFlashComponent (flashTimer: TimeSpan) (flashTime: float) (flashTimes: int) (flashTimesLeft: int) (flashOn: bool) (running: bool) : FlashComponent =
+    { FlashTimer = flashTimer; FlashTime = flashTime; FlashTimes = flashTimes; FlashTimesLeft = flashTimesLeft; FlashOn = flashOn; Running = running }
