@@ -25,19 +25,7 @@ let private isColliding (entity1: Entity) (entity2: Entity) =
         | _ ->
             false
 
-let private removeCollidedEntities (entities: Entity list) =
-    entities
-    |> List.filter (fun entity ->
-        let c = getComponentFromEntity CollisionComponent entity
-        match (c) with
-            | Some col ->
-                let collisionComponent = unbox<CollisionComponent> col
-                not collisionComponent.Collided
-            | _ ->
-                true
-    )
-
-let update (world: World) =
+let startUpdate (world: World) =
     let collisionEntities =
         world.Entities
         |> List.filter (fun entity ->
@@ -57,18 +45,34 @@ let update (world: World) =
             match (c) with
                 | Some col ->
                     let collisionComponent = unbox<CollisionComponent> col
-                    let isColliding =
+                    let (isColliding, collider) =
                         let rec check entities =
                             match entities with
                                 | otherEntity :: rest ->
                                     if entity.Id <> otherEntity.Id && isColliding entity otherEntity then
-                                        true
+                                        (true, otherEntity.Type)
                                     else check rest
                                 | [] ->
-                                    false
+                                    (false, NoEntity)
                         check collisionEntities
 
-                    let newCollisionComponent = { collisionComponent with Collided = isColliding }
+                    let newCollisionComponent = { collisionComponent with Collided = isColliding; Collider = collider }
+                    addComponentToEntity CollisionComponent newCollisionComponent entity
+                | _ ->
+                    entity
+        )
+
+    { world with Entities = newEntities }
+
+let endUpdate (world: World) =
+    let newEntities =
+        world.Entities
+        |> List.map (fun entity ->
+            let c = getComponentFromEntity CollisionComponent entity
+            match (c) with
+                | Some col ->
+                    let collisionComponent = unbox<CollisionComponent> col
+                    let newCollisionComponent = { collisionComponent with Collided = false }
                     addComponentToEntity CollisionComponent newCollisionComponent entity
                 | _ ->
                     entity

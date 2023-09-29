@@ -17,17 +17,19 @@ type Game1 () as x =
     let mutable spriteBatch = Unchecked.defaultof<SpriteBatch>
     let mutable world : World = { Entities = [] }
 
-    override x.Initialize() =
-        spriteBatch <- new SpriteBatch(x.GraphicsDevice)
-        base.Initialize()
-
-        x.IsMouseVisible <- true
-
+    let startGame () =
         let entities =
             [ createPlayer x.GraphicsDevice ]
             @ [ createEnemySpawner ]
 
-        world <- { world with Entities = entities }
+        { world with Entities = entities }
+
+    override x.Initialize() =
+        spriteBatch <- new SpriteBatch(x.GraphicsDevice)
+        base.Initialize()
+        x.IsMouseVisible <- true
+
+        world <- startGame()
 
     override x.LoadContent() =
         ()
@@ -41,9 +43,11 @@ type Game1 () as x =
             |> MouseShootingSystem.update gameTime x.GraphicsDevice
             |> EnemyMovementSystem.update gameTime
             |> EnemySpawnSystem.update gameTime x.GraphicsDevice
-            |> CollisionSystem.update
+            |> CollisionSystem.startUpdate // CALL BEFORE COLLISION CHECKS
             |> EnemySystem.update
-            |> HealthSystem.update
+            |> CollidedHandlerSystem.update
+            |> CollisionSystem.endUpdate // CALL AFTER COLLISION CHECKS
+            |> CheckPlayerDeathSystem.update startGame
 
     override x.Draw (gameTime: GameTime) =
         x.GraphicsDevice.Clear(Color.CornflowerBlue)

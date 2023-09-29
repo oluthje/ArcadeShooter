@@ -18,6 +18,13 @@ type Component =
     | FlashComponent
     // | RemoveEntityComponent
 
+type EntityNames =
+    | Player
+    | EnemySpawner
+    | Enemy
+    | Bullet
+    | NoEntity
+
 type PlayerMovementComponent = {
     Speed: float
 }
@@ -61,6 +68,7 @@ type EnemySpawnComponent = {
 
 type CollisionComponent = {
     Collided: bool
+    Collider: EntityNames
     Size: Point
 }
 
@@ -98,7 +106,10 @@ let createDamageComponent (damage: int) : DamageComponent =
     { Damage = damage }
 
 let createCollisionComponent (size: Point) : CollisionComponent =
-    { Size = size; Collided = false }
+    { Size = size; Collided = false; Collider = NoEntity }
 
-let createFlashComponent (flashTimer: TimeSpan) (flashTime: float) (flashTimes: int) (flashTimesLeft: int) (flashOn: bool) (running: bool) : FlashComponent =
-    { FlashTimer = flashTimer; FlashTime = flashTime; FlashTimes = flashTimes; FlashTimesLeft = flashTimesLeft; FlashOn = flashOn; Running = running }
+let createFlashComponent (flashTime: float) (flashTimes: int) : FlashComponent =
+    { FlashTimer = TimeSpan.Zero; FlashTime = flashTime; FlashTimes = flashTimes; FlashTimesLeft = 0; FlashOn = false; Running = false }
+
+let createBulletComponent (direction: Vector2) (speed: float) : BulletComponent =
+    { Direction = direction; Speed = speed }

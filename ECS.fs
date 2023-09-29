@@ -36,6 +36,6 @@ let GenerateId() =
 
 let generateId = GenerateId()
 
-let createEntity components =
+let createEntity components entityType =
     let entityId = generateId()
-    { Id = entityId; Components = components }
+    { Id = entityId; Components = components; Type = entityType }
